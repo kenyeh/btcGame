@@ -1,2 +1,0 @@
-# btcGame
-btc game
