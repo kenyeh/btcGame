@@ -1,0 +1,19 @@
+.counter {
+    display: flex;
+    flex-direction: column;
+
+    
+
+    .counter-panel {
+        width: 303px;
+        height: 98px;
+
+        background: url('../../images/counter-panel-bg.png') no-repeat top center / 100% auto;
+    }
+    .player-list-panel {
+        width: 303px;
+        height: 801px;
+
+        background: url('../../images/player-list-panel-bg.png') no-repeat top center / 100% auto;
+    }
+}

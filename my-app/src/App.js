@@ -1,27 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Button } from 'antd';
-import './App.scss';
+
+
+import './App.css';
+
+import AnimationCom from './components/Animation/AnimationCom';
+import Layout from './components/Layout/layout';
+import Footer from './components/Footer/footer';
+
 
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.ha
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <Button type="primary">Button</Button>
-      </header>
+      <AnimationCom />
+      <Layout />
+      <Footer />
     </div>
   );
 }

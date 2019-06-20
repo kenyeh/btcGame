@@ -1,0 +1,33 @@
+.layout {
+    position: relative;
+    z-index: 5;
+    width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+    
+
+    // temp
+    color: white;
+    text-align: center;
+
+    .game-layout {
+        display: flex;
+        flex-direction: row;
+        padding: 0 50px;
+
+        .left-panel ,.right-panel{
+            padding-top: 72px;
+        }
+        .left-panel {
+            width: 303px;
+        }
+        .right-panel {
+            width: 302px;
+        }
+        .center-panel {
+            flex-grow: 1;
+            height: 973px;
+            // height: calc(100vh - 68px);
+        }
+    }
+}

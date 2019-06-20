@@ -1,0 +1,270 @@
+.bet {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+
+    .final-num {
+        display: none;
+    }
+    .status {
+        margin-top: 92px;
+        flex-grow: 1;
+
+        .issues {
+            width: 100%;
+            height: 35px;
+            
+            text-align: center;
+            font-size: 18px;
+            line-height: 35px;
+            color: #11ffdb;
+        }
+
+        .status-heigh {
+            width: 373px;
+            height: 37px;
+            margin: 0 auto;
+            margin-top: 15px;
+    
+            line-height: 37px;
+            font-size: 0;
+    
+            background: rgb(227,88,32);
+            background: linear-gradient(90deg, rgba(227,88,32,0) 0%, rgba(227,88,32,0.804359243697479) 45%, rgba(227,88,32,0.804359243697479) 55%, rgba(227,88,32,0) 100%);
+    
+            .icon-heigh {
+                display: inline-block;
+                
+                margin-right: 10px;
+                padding-top: 6px;
+                width: 26px;
+                height: 26px;
+                background: url('../../images/icon-current-h.png') no-repeat bottom center / 100% auto;
+            }
+            span {
+                display: inline-block;
+                vertical-align: top;
+                height: 37px;
+                font-size: 30px;
+                color: #ffffff;
+            }
+        }
+
+        
+    }
+
+    .bet-panel {
+        flex-shrink: 0;
+        height: 186px;
+        
+        .bet-statistics {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .bet-number {
+                box-sizing: border-box;
+                padding-left: 125px;
+                width: 230px;
+                height: 41px;
+
+                text-align: left;
+                line-height: 41px;
+                font-size: 18px;
+                color: #fff53b;
+                font-weight: 600;
+                background: url('../../images/bet-l-bg.png') no-repeat top left / auto 100%;
+            }
+            .bet-prize {
+                box-sizing: border-box;
+                padding-left: 115px;
+                width: 230px;
+                height: 41px;
+
+                text-align: left;
+                line-height: 41px;
+                font-size: 18px;
+                color: #fff53b;
+                font-weight: 600;
+                background: url('../../images/bet-r-bg.png') no-repeat top right / auto 100%;
+            }
+        }
+
+        .bet-select-section {
+            width: 483px;
+            height: 146px;
+            padding-left: 10px;
+
+            background: url('../../images/bet-panel-bg.png') no-repeat top center / 100% auto;
+        }
+
+        .set-number-section {
+            padding-top: 10px;
+            
+            display: flex;
+            flex-direction: row;
+
+            .prize-rate {
+                position: relative;
+                .rate-num {
+                    position: relative;
+                    z-index: 2;
+                    box-sizing: border-box;
+                    width: 102px;
+                    height: 65px;
+                    padding-top: 25px;
+
+                    font-size: 20px;
+                    color: #fff53b;
+                    line-height: 30px;
+                    text-align: center;
+                    font-weight: 600;
+
+                    background: url('../../images/rate.png') no-repeat top center / 100% auto;
+
+                    
+                }
+                &::after {
+                    content: '';
+                    display: block;
+                    z-index: 1;
+                    position: absolute;
+                    width: 142px;
+                    height: 142px;
+                    top: -36px;
+                    left: -20px;
+                    background: url('../../images/light.png') no-repeat top center / 100% auto;
+
+                    
+                }
+                &.spin::after{
+                    animation: spin 4s infinite linear;
+                    @keyframes spin {
+                        from {
+                            transform:rotate(0deg);
+                        }
+                        to {
+                            transform:rotate(360deg);
+                        }
+                    }
+                }
+            }
+
+            .ruler-section {
+
+                width: 382px;
+                margin-left: -4px;
+
+                background: url('../../images/ruler-start.png') repeat-x top center;
+            }
+        }
+
+        .submit-section {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: 50px;
+            margin-top: 10px;
+
+            .set-amount {
+                position: relative;
+                z-index: 1;
+                .set-group {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    width: 304px;
+                    height: 50px;
+
+                    
+                    background: url('../../images/amount-bg.png') no-repeat top center / 100% auto;
+
+                    .btn-minus, .btn-plus {
+                        width: 30px;
+                        height: 32px;
+                    }
+                    .btn-minus {
+                        margin-left: 15px;
+                        background: url('../../images/icon-minus.png') no-repeat center center / 100% auto;
+                    }
+                    .btn-plus {
+                        background: url('../../images/icon-plus.png') no-repeat center center / 100% auto;
+                    }
+                    .input-amount {
+                        width: 105px;
+                        height: 32px;
+                        margin: 0px 10px;
+
+                        font-size: 18px;
+                        line-height: 32px;
+                        color: #fff;
+                        text-align: center;
+
+                        background-color: #04133b;
+                        border-radius: 3px;
+                        border: 0;
+                    }
+                    .btn-show-fast {
+                        width: 55px;
+                        height: 32px;
+                        margin-left: 29px;
+    
+                        font-size: 18px;
+                        color: #fff;
+                        line-height: 32px;
+                        background: transparent;
+                        border: 0;
+                    }
+                }
+                
+                .fast-amount-panel {
+                    display: none;
+                    position: absolute;
+                    z-index: 1;
+                    width: 471px;
+                    height: 68px;
+                    background: url('../../images/fast-amount.png') no-repeat top center / 100% auto;
+                    .amount-group {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        height: 100%;
+
+                        .btn-set-amount {
+                            width: 55px;
+                            height: 55px;
+
+                            font-size: 17px;
+                            line-height: 53px;
+                            text-align: center;
+                            color: #fff;
+
+                            background: url('../../images/btn-fast.png') no-repeat top center / 100% auto;
+
+                            &:hover{
+                                color: #fff53b;
+                                background: url('../../images/btn-fast-on.png') no-repeat top center / 100% auto;
+                            }
+                        }
+                    }
+                }
+            }
+            .submit-group {
+                .btn-bet-confirm {
+                    width: 170px;
+                    height: 66px;
+
+                    font-size: 24px;
+                    line-height: 66px;
+                    color: #fff;
+                    text-shadow: black 0.1em 0.1em 0.2em;
+
+                    background: url('../../images/btn-bet.png') no-repeat top center / 100% auto;
+                }
+                .submit-confirm {
+                    display: none;
+                }
+            }
+        }
+    }
+}
