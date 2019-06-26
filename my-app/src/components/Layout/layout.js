@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 import Header from '../Header/header'
-import Counter from '../Counter/couneter'
-import Trend from '../Trend/trend'
-import Bet from '../Bet/bet'
+import CounterContainer from '../../containers/counter'
+import TrendContainer from '../../containers/trend'
+import BetContainer from '../../containers/bet'
 
 import './layout.scss';
 
@@ -15,13 +15,13 @@ class layout extends Component {
                 <Header />
                 <div className="game-layout">
                     <div className="left-panel">
-                        <Counter />
+                        <CounterContainer />
                     </div>
                     <div className="center-panel">
-                        <Bet />
+                        <BetContainer />
                     </div>
                     <div className="right-panel">
-                        <Trend />
+                        <TrendContainer />
                     </div>
                 </div>
             </div>

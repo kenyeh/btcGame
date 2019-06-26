@@ -1,12 +1,12 @@
 @import-normalize;
 
-body {
-    font-family:  "Microsoft Yahei", "PingFangSC", "Lantinghei SC", "Helvetica Neue" , Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Wenquanyi Micro Hei", sans-serif;
-}
 .App {
     position: relative;
     width: 100%;
     min-height: 100vh;
+
+    font-family:  "Microsoft Yahei", "PingFangSC", "Lantinghei SC", "Helvetica Neue" , Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Wenquanyi Micro Hei", sans-serif;
+    -webkit-font-smoothing: auto;
 }
 
 

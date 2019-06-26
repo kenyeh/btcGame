@@ -7,13 +7,140 @@
     .counter-panel {
         width: 303px;
         height: 98px;
+        padding-left: 14px;
 
         background: url('../../images/counter-panel-bg.png') no-repeat top center / 100% auto;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .total-top {
+            flex-grow: 1;
+
+            color: #fff;
+            text-align: center;
+            .number {
+                font-size: 20px;
+                line-height: 30px;
+            }
+            .title {
+                font-size: 18px;
+                line-height: 30px;
+            }
+        }
     }
     .player-list-panel {
         width: 303px;
         height: 801px;
 
         background: url('../../images/player-list-panel-bg.png') no-repeat top center / 100% auto;
+
+        .current-issues {
+            width: 100%;
+            margin-top: 45px;
+            font-size: 14px;
+            color: #fff;
+            line-height: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .list-title {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            margin-top: 90px;
+
+            font-size: 16px;
+            line-height: 30px;
+            .th-name {
+                width: 98px;
+                padding-left: 10px;
+            }
+            .th-number {
+                width: 99px;
+            }
+            .th-amount {
+                width: 105px;
+            }
+        }
+
+        .player-list {
+            overflow-y: auto;
+            height: 610px;
+            margin-top: 4px;
+
+            &::-webkit-scrollbar {
+                border-radius: 5px;
+                height: 10px;
+                width: 5px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #1890ff;
+                border-radius: 10px;
+            }
+
+            &::-webkit-scrollbar-track {
+                border-radius: 10px;
+            }
+            
+            .list-item {
+                position: relative;
+                font-size: 16px;
+                line-height: 30px;
+
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                color: #6ce9ff;
+                text-align: left;
+                .td-name {
+                    width: 98px;
+                    padding-left: 22px;
+                }
+                .td-number {
+                    padding-left: 20px;
+                    width: 99px;
+                }
+                .td-amount {
+                    padding-left: 20px;
+                    width: 105px;
+                }
+
+                &.self {
+                    color: #fff53b;
+                    &::before {
+                        content: '';
+                        display: block;
+                        position: absolute;
+                        left: 4px;
+                        top: 8px;
+                        width: 16px;
+                        height: 16px;
+
+                        background: url('../../images/icon-trophy.png') no-repeat top center / 100% auto;
+                    }
+                }
+                &.win {
+                    color: #ffa201;
+
+                    &::before {
+                        content: '';
+                        display: block;
+                        position: absolute;
+                        left: 3px;
+                        top: 9px;
+                        width: 12px;
+                        height: 11px;
+
+                        background: url('../../images/icon-list-star.png') no-repeat top center / 100% auto;
+                    }
+                }
+            }
+        }
     }
 }

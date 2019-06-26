@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import './AnimationCom.scss';
 
 export default class AnimationCom extends Component {
+    
     render() {
         return (
             <div className="animted-section">
