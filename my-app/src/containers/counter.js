@@ -12,12 +12,16 @@ export class CounterContainer extends Component {
 }
 
 CounterContainer.propTypes = {
-    issues: PropTypes.string.isRequired,
+    currentIssues: PropTypes.string.isRequired,
+    playResult: PropTypes.object,
+    animationStatus: PropTypes.string
 };
 
 function mapStateToProps(state) {
     return {
-        issues: state.game.issues,
+        currentIssues: state.game.currentIssues,
+        playResult: state.game.playResult,
+        animationStatus: state.game.animationStatus
     }
 }
 

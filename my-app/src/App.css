@@ -1,20 +1,59 @@
 @import-normalize;
 
-.App {
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-
-    font-family:  "Microsoft Yahei", "PingFangSC", "Lantinghei SC", "Helvetica Neue" , Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Wenquanyi Micro Hei", sans-serif;
-    -webkit-font-smoothing: auto;
+/* fixed toolbar css */
+.topbar .game-menu-list {
+  box-sizing: content-box;
+}
+.topbar .game-menu-text {
+  font-size: 14px;
+}
+#J-top-live-menu, #J-top-egame-menu {
+  margin-top: 0;
+}
+#J-top-live-menu .lives , #J-top-egame-menu .egames{
+  display: inline-block;
+  margin-top: 5px;
+}
+.topbar, .topbar-bg {
+  min-width: 1300px;
+}
+.topbar-bg , .g_34{
+  width: 1300px;
+}
+.topbar-bg,  .topbar{
+  background-color: rgb(0, 0, 0);
+}
+.j-ui-miniwindow .btn.confirm {
+  padding: 0 10px;
+}
+.bar-menu {
+  margin-bottom: 0;
+}
+body > .main {
+  border: 0;
+}
+body > .main .gameMessageNotice {
+  width: 100%;
 }
 
+.App {
+  position: relative;
+  width: 100%;
+  min-width: 1300px;
+  min-height: calc(100vh + 49px);
+
+  font-family:  "Microsoft Yahei", "PingFangSC", "Lantinghei SC", "Helvetica Neue" , Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Wenquanyi Micro Hei", sans-serif;
+  -webkit-font-smoothing: auto;
+}
 
 .btn {
   cursor: pointer;
   background: transparent;
   border: 0;
   outline: none;
+  font-weight: normal;
+  padding: 0;
+  border-radius: 0;
 }
 input {
   outline: none;

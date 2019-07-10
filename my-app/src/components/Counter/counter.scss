@@ -89,7 +89,7 @@
             
             .list-item {
                 position: relative;
-                font-size: 16px;
+                
                 line-height: 30px;
 
                 display: flex;
@@ -99,15 +99,23 @@
                 color: #6ce9ff;
                 text-align: left;
                 .td-name {
-                    width: 98px;
+                    font-size: 12px;
+                    width: 118px;
                     padding-left: 22px;
+                    white-space:nowrap;
+                    text-overflow:ellipsis;
+                    overflow:hidden;
                 }
                 .td-number {
-                    padding-left: 20px;
+                    padding-right: 20px;
+                    font-size: 16px;
+                    text-align: center;
                     width: 99px;
                 }
                 .td-amount {
-                    padding-left: 20px;
+                    // padding-left: 20px;
+                    font-size: 16px;
+                    text-align: center;
                     width: 105px;
                 }
 
@@ -122,7 +130,7 @@
                         width: 16px;
                         height: 16px;
 
-                        background: url('../../images/icon-trophy.png') no-repeat top center / 100% auto;
+                        background: url('../../images/icon-list-star.png') no-repeat top center / 100% auto;
                     }
                 }
                 &.win {
@@ -137,7 +145,7 @@
                         width: 12px;
                         height: 11px;
 
-                        background: url('../../images/icon-list-star.png') no-repeat top center / 100% auto;
+                        background: url('../../images/icon-trophy.png') no-repeat top center / 100% auto;
                     }
                 }
             }

@@ -13,14 +13,16 @@ export class TrendContainer extends Component {
 
 TrendContainer.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    historyList: PropTypes.array.isRequired,
-    rankList: PropTypes.object.isRequired,
+    historyList: PropTypes.array,
+    rankList: PropTypes.object,
+    issueCode: PropTypes.number
 };
 
 function mapStateToProps(state) {
     return {
         historyList: state.game.historyList,
-        rankList: state.game.rankList
+        rankList: state.game.rankList,
+        issueCode: state.game.trendIssueCode
     }
 }
 

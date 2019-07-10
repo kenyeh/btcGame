@@ -1,9 +1,273 @@
+$launcher-during: 0.8s;
 .animted-section {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    overflow: hidden;
 
     background-image: linear-gradient(to bottom, #020107, #1f1944);
+
+    .section-area {
+        position: relative;
+        width: 100%;
+        height: 100%;
+
+        
+    }
+    .bg-universe {
+        position: absolute;
+        opacity: 1;
+        left: 0;
+        top: 0;
+        // background-color: #000;
+        
+        &.fading {
+            opacity: 0;
+            animation: fade 8s;
+            @keyframes fade {
+                0% { opacity: 1; }
+                100% { opacity: 0; }
+            }
+        }
+        &.hide {
+            opacity: 0;
+        }
+    }
+    .flying-star {
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        &.show {
+            opacity: 1;
+            animation: showStarsFlying 8s;
+            ul li {
+                animation-name: starsFlying;
+                animation-duration: normal;
+                animation-iteration-count: infinite;
+            }
+        }
+        
+
+        @keyframes showStarsFlying {
+            0% { opacity: 0; }
+            20% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        
+        ul {
+            list-style: none;
+            
+            @for $i from 1 through 50 {
+                $counter: 50*$i;
+                li:nth-of-type(#{$i}) {
+                    animation-delay: (#{-$counter}s);
+                    animation-duration: (#{$counter * .02}s);
+                    top: random(1000) + px;
+                    left: random(1920) + px;
+                    @if $i <= 4 {
+                        width: 1px;
+                        height: #{(2500 - $counter) * .1 - 50*$i}px;
+                    }
+                    
+                    // top: 20*$i + px;
+                    // left: 20*$i + px;
+                    
+                    
+                }
+            }
+
+            li {
+                width: 2px;
+                height: 2px;
+                
+                background: #ffff33;
+                position: absolute;
+                border-radius: 50%;
+                box-shadow: 0px 0px 10px 0px #ffff33, 0px 0px 10px 0px #ffff33, 0px 0px 10px 0px #ffff33;
+                left: 10px;
+                top: 10px;
+                z-index: 0;
+
+                @keyframes starsFlying {
+                    0% { transform: translateY(-100vh) }
+                    100% { transform: translateY(100vh) }
+                }
+            }
+        }
+    }
+
+    .ground {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: url('../../images/ground-bg.png') no-repeat bottom center ;
+
+        &.sink {
+            animation: sink 4s ease-out;
+            transform: translate(0, 100vh);
+            @keyframes sink {
+                0% { transform: translate(0, 0) ; }
+                13% { transform: translate(0, 0) ; }
+                100% { transform: translate(0, 100vh) ; }
+            }
+        }
+        &.remain-sink {
+            transform: translate(0, 100vh);
+        }
+        // &.recover {
+        //     animation: recover 2s ease-out;
+        //     transform: translate(0, 0);
+        //     @keyframes recover {
+        //         0% { transform: translate(0, 100vh); }
+        //         50% { transform: translate(0, 100vh); }
+        //         100% { transform: translate(0, 0); }
+        //     }
+        // }
+
+        &.ground-shake {
+            animation: groundShake 0.5s;
+            animation-iteration-count: infinite;
+            
+            
+        }
+        .launcher {
+            position: absolute;
+            z-index: 11;
+            bottom: 0px;
+            left: 50%;
+            margin-left: -340px;
+            width: 621px;
+            height: 436px;
+
+            background: url('../../images/launcher.png') no-repeat top center ;
+            background-size: 621px 3487px;
+            background-position: 0 top;
+            transition: all .5s;
+            &.launcher-ready {
+                background: url('../../images/launcher.png') no-repeat top center ;
+                // background-size: 621px 3487px;
+                background-position: 0 -1743px;
+                animation-name: ready;
+                animation-duration: 0.3s;
+                animation-iteration-count: infinite;
+                animation-timing-function: steps(3);
+            }
+            &.launching {
+                background-position: 0 bottom;
+                animation-name: launching;
+                animation-duration: $launcher-during;
+                // animation-iteration-count: infinite;
+                animation-timing-function: steps(7);
+                background-position: 0 bottom;
+            }
+            @keyframes ready {
+                0% {
+                    background-position: 0 -436px;
+                }
+                100% {
+                    background-position: 0 -1743px;
+                }
+            }
+            @keyframes launching {
+                0% {
+                    background-position: 0 top;
+                }
+                100% {
+                    background-position: 0 bottom;
+                }
+            }
+        }
+        
+    }
+    .rocket-element {
+        $rocketHeight: -300px;
+        position: absolute;
+        z-index: 10;
+        bottom: 142px;
+        left: 50%;
+        margin-left: -36px;
+        width: 72px;
+        height: 226px;
+
+        &.rocket-shake {
+            animation: groundShake 0.5s;
+            animation-iteration-count: infinite;
+        }
+
+        &.flyaway {
+            animation: rocketFlyaway 1s;
+            transform: translate(0px, -1500px);
+            @keyframes rocketFlyaway {
+                0% { transform: translate(0px, $rocketHeight) ; }
+                100% { transform: translate(0px, -1500px) ; }
+            }
+        }
+        &.fly {
+            animation: rocketFly 2s;
+            transform: translate(0px, $rocketHeight) ;
+            @keyframes rocketFly {
+                0% { transform: translate(0px, 0px) ; }
+                20% { transform: translate(0px, 0px) ; }
+                // 60% { transform: translate(0px, 0px) ; }
+                100% { transform: translate(0px, $rocketHeight) ; }
+            }
+        }
+
+        .rocket {
+            position: relative;
+            width: 72px;
+            height: 226px;
+            background: url('../../images/rocket.png') no-repeat top center / 100% auto;
+            &.blur::before {
+                content: '';
+                position: absolute;
+                // opacity: 0;
+                z-index: 1;
+                width: 72px;
+                height: 226px;
+                background: url('../../images/rocket-blur.png') no-repeat top center / 100% auto;
+                animation: rocketblur 8s;
+
+                @keyframes rocketblur {
+                    0% { opacity: 0; }
+                    50% { opacity: 0; }
+                    100% { opacity: 1; }
+                }
+            }
+            &.fire::after {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                width: 72px;
+                height: 226px;
+                // background: url('../../images/fire-fm-1.png') no-repeat top center / 100% auto;
+                animation: rocketFire 0.2s infinite; 
+                animation-delay: 0.4s;
+
+                @keyframes rocketFire {
+                    0% { background-image: url("../../images/fire-fm-1.png"); }
+                    50% { background-image: url("../../images/fire-fm-2.png"); }
+                    100% { background-image: url("../../images/fire-fm-1.png"); }
+                }
+            }
+        }
+        
+    }
+    @keyframes groundShake {
+        0% { transform: translate(1px, 1px); }
+        10% { transform: translate(-1px, -2px); }
+        20% { transform: translate(-3px, 0px); }
+        30% { transform: translate(3px, 2px); }
+        40% { transform: translate(1px, -1px); }
+        50% { transform: translate(-1px, 2px); }
+        60% { transform: translate(-3px, 1px); }
+        70% { transform: translate(3px, 1px); }
+        80% { transform: translate(-1px, -1px); }
+        90% { transform: translate(1px, 2px); }
+        100% { transform: translate(1px, -2px); }
+    }
 }

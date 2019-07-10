@@ -5,6 +5,20 @@ export const setIssues = (issues) => {
     }
 }
 
+export const setPlayResult = (playResult) => {
+    return {
+        type: 'SET_PLAYRESULT',
+        playResult
+    }
+}
+
+export const setGameConfig = (data) => {
+    return {
+        type: 'SET_GAMECONFIG',
+        gameConfigData: data
+    }
+}
+
 export const setHistoryList = (list) => {
     return {
         type: 'SET_HISTORY_LIST',
@@ -30,6 +44,13 @@ export const setBetAward = (data) => {
     return {
         type: 'SET_BETAWARD',
         betAwardData: data
+    }
+}
+
+export const setTrendIssueCode = (issues) => {
+    return {
+        type: 'SET_TRENDISSUECODE',
+        trendIssueCode: issues
     }
 }
 

@@ -14,12 +14,12 @@ export class AnimationContainer extends Component {
 
 AnimationContainer.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    issues: PropTypes.string.isRequired
+    animationStatus: PropTypes.string
 };
 
 function mapStateToProps(state) {
     return {
-        issues: state.game.issues
+        animationStatus: state.game.animationStatus
     }
 }
 

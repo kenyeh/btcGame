@@ -14,20 +14,45 @@ export class trend extends Component {
             red: 0,
             green: 0
         }
+        
+        this.rankListTitleMap = {
+            "RANK1": "1.00",
+            "RANK2": "1.01-1.50",
+            "RANK3": "1.51-1.99",
+            "RANK4": "2.00-2.99",
+            "RANK5": "3.00-4.99",
+            "RANK6": "5.00-9.99",
+            "RANK7": "10.00-49.99",
+            "RANK8": "50以上"
+        }
     }
 
-    componentDidMount() {
-        // Histroy
-        getBetHistroy().then(rs => {
-            const { dispatch } = this.props;
-            dispatch(setHistoryList(rs.result.list));
-        });
+ 
 
-        // Rank 
-        getBetRank().then(rs => {
-            const { dispatch } = this.props;
-            dispatch(setRankList(rs));
-        });
+    componentDidUpdate(prevProps) {
+        if ((this.props.issueCode !== prevProps.issueCode) && this.props.issueCode) {
+            // Histroy
+            getBetHistroy({
+                issueCount: 30,
+                lotteryId: 99901,
+                issueCode: this.props.issueCode
+            }).then(rs => {
+                const { dispatch } = this.props;
+                if (rs) {
+                    dispatch(setHistoryList(rs.gameDrawResultStrucList));
+                }
+            });
+
+            // Rank 
+            getBetRank({
+                "issueCount": 300
+            }).then(rs => {
+                const { dispatch } = this.props;
+                if (rs) {
+                    dispatch(setRankList(rs));
+                }
+            });
+        }
     }
     
 
@@ -52,7 +77,7 @@ export class trend extends Component {
 
             list.push(
                 <div className="list-item" key={index}>
-                    <div className="td-issues">{item.issue}期</div>
+                    <div className="td-issues">{item.webIssueCode.split('-')[1]}期</div>
                     <div className={'td-number ' + (Number(item.number) > 2 ? 'red' : '')}>{item.number}</div>
                 </div>
             );
@@ -109,9 +134,9 @@ export class trend extends Component {
                                     <div className="td-rank">区间</div>
                                     <div className="td-number">出现次数</div>
                                 </div>
-                                {Object.entries(this.props.rankList).map(([key,value], index) => (
+                                {Object.entries(this.props.rankList).sort().map(([key,value], index) => (
                                     <div className="list-item" key={index}>
-                                        <div className="td-rank">{key}</div>
+                                        <div className="td-rank">{this.rankListTitleMap[key]}</div>
                                         <div className="td-number">{value}</div>
                                     </div>
                                 ))}

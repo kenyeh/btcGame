@@ -2,27 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import Bet from '../components/Bet/bet'
-import { setLastNumber, setIssues, setBetAward } from '../actions';
-import { getLastNumber, getBetAward } from '../services'
+// import { setLastNumber } from '../actions';
+// import { getLastNumber } from '../services';
 
 
 export class BetContainer extends Component {
-    componentDidMount () {
-        // get lastnumber data
-        const { dispatch } = this.props;
-
-        getLastNumber().then(rs => {
-            // console.log('BetContainer ', rs);
-            const issues = rs.lastnumber;
-            dispatch(setLastNumber(rs));
-            console.log(issues);
-            dispatch(setIssues(issues));
-        })
-
-        getBetAward().then(rs => {
-            dispatch(setBetAward(rs));
-        })
-    }
+    // componentDidMount () {
+    //     // get lastnumber data
+    //     const { dispatch } = this.props;
+    //     getLastNumber().then(rs => {
+    //         // console.log('BetContainer ', rs);
+    //         if (rs) {
+    //             dispatch(setLastNumber(rs));
+    //         }
+    //     })
+    // }
     
     render() {
         return ( <Bet {...this.props}/>);
@@ -31,18 +25,16 @@ export class BetContainer extends Component {
 
 BetContainer.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    issues: PropTypes.string,
-    lastNumberData: PropTypes.object,
-    betAwardData: PropTypes.object,
-    loading: PropTypes.bool,
+    // issues: PropTypes.string,
+    // currentIssues: PropTypes.string,
+    // lastNumberData: PropTypes.object,
 };
 
 function mapStateToProps(state) {
     return {
-        issues: state.game.issues,
-        lastNumberData: state.game.lastNumberData,
-        betAwardData: state.game.betAwardData,
-        loading: state.game.loading
+        // issues: state.game.issues,
+        // currentIssues: state.game.currentIssues,
+        // lastNumberData: state.game.lastNumberData,
     }
 }
 

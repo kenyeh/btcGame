@@ -1,5 +1,6 @@
-import React from 'react';
-
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
 
 import './App.css';
 
@@ -9,14 +10,27 @@ import Footer from './components/Footer/footer';
 
 
 
-function App() {
-  return (
-    <div className="App">
-      <AnimationContainer />
-      <Layout />
-      <Footer />
-    </div>
-  );
+export class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <AnimationContainer />
+        <Layout {...this.props}/>
+        <Footer />
+      </div>
+    );
+  }
+  
 }
 
-export default App;
+App.propTypes = {
+  gameConfigData: PropTypes.object,
+};
+
+function mapStateToProps(state) {
+  return {
+    gameConfigData: state.game.gameConfigData
+  }
+}
+
+export default connect(mapStateToProps)(App)
