@@ -7,23 +7,30 @@ let socketPort = ':3102';
 if (window.location.protocol === 'https:') {
     socketPort = ':3103'
 }
-const isDev = window.location.port === '3000' ? true : false;
+
+const isDev = window.location.hostname === 'localhost' ? true : false;
 export let socket = {}
 if (!isDev) {
-    // console.log(`${pageLocation}${socketPort}`);
-    socket = io(`${window.location.protocol + "//" + window.location.hostname}${socketPort}`, {path: '/socketio'});
+    if (window.location.hostname === 'em.fhhd.net') {
+        socket = io(`https://em.fhhd.net:8443`, {path: '/socketio'});
+    } else {
+        // console.log(`${pageLocation}${socketPort}`);
+        socket = io(`${window.location.protocol + "//" + window.location.hostname}${socketPort}`, {path: '/socketio'});
+    }
+    
 } else {
     socket = io('http://10.12.175.14:4000');
 }
 
 // console.log(`${pageLocation}:3102`);
 
-let firstConnected = false;
+socket.initConnected = false;
 socket.on('connect', function () {
     // message.success('连接成功', 1);
     console.log('socket connect');
-    if (!firstConnected) {
-        firstConnected = true
+    console.log('socket log', new Date().getTime())
+    if (!socket.initConnected) {
+        socket.initConnected = true
     } else {
         console.log('reconnect');
         socket.afterReconnect();
@@ -32,10 +39,8 @@ socket.on('connect', function () {
 socket.on('disconnect', function () {
     // message.error('与服务器连接断开');
     console.log('socket disconnect');
+    console.log('socket log', new Date().getTime())
 });
-
-
-
 
 
 export const gameConfig = () => {
@@ -166,7 +171,7 @@ const generateEvent = eventName => (...args) => {
             resolve(data);
         })
         .catch(function(err){
-            console.log(err);
+            // console.log(err);
             reject(err)
             // message.error('请求超时无响应');
         });
@@ -189,7 +194,6 @@ export const getmyip = (...args) => {
  */
 export const getGameConfig = () => {
     if (isDev) {
-        
         return new Promise((resolve, reject) => {
             const data = {
                 "gameType": null,
@@ -255,32 +259,6 @@ export const getGameConfig = () => {
 
     } else {
         return generateEvent('getGameConfig')();
-        // const url = new URL(`${pageLocation}/${apiUrl['getGameConfig']}`);
-        // url.search = new URLSearchParams({});
-    
-        // return new Promise((resolve, reject) => {
-        //     fetch(url)
-        //     .then(function(response){
-        //         try {
-        //             return response.json();
-        //         } catch(err) {
-        //             reject(err)
-        //         }
-        //     })
-        //     .then(function(data){
-        //         // console.log(data);
-        //         resolve(data);
-        //     })
-        //     .catch(function(err){
-        //         console.log(err);
-        //         reject(err)
-        //         // message.error('请求超时无响应');
-        //     });
-            
-        // }).catch(err => {
-        //     message.error('请求超时无响应');
-        //     // throw err;
-        // });
     }
     
 }
@@ -290,33 +268,6 @@ export const getGameConfig = () => {
  */
 export const getBetHistroy = (...args) => {
     return generateEvent('getBetHistroy')(...args);
-
-    // return new Promise((resolve, reject) => {
-    //     const data = {
-    //         "result": {
-    //             "list": [
-    //                 {
-    //                     "code": "1",
-    //                     "issue": "12344",
-    //                     "lotteryid": 0,
-    //                     "time": "111",
-    //                     "number": "1.4"
-    //                 },
-    //                 {
-    //                     "code": "1",
-    //                     "issue": "12343",
-    //                     "lotteryid": 0,
-    //                     "time": "111",
-    //                     "number": "4.9"
-    //                 }
-    //             ]
-    //         }
-    //     }
-    //     resolve(data);
-    // }).catch(err => {
-    //     message.error('请求超时无响应');
-    //     // throw err;
-    // });
 }
 
 /**
@@ -324,23 +275,6 @@ export const getBetHistroy = (...args) => {
  */
 export const getBetRank = (...args) => {
     return generateEvent('getBetRank')(...args);
-
-    /* return new Promise((resolve, reject) => {
-        const data = {
-            "1.00": 22,
-            "1.01-1.50": 10,
-            "1.51-1.99": 22,
-            "2.00-2.99": 10,
-            "3.00-4.99": 22,
-            "5.00-9.99": 10,
-            "10.00-49.99": 22,
-            "50以上": 10
-        }
-        resolve(data);
-    }).catch(err => {
-        message.error('请求超时无响应');
-        // throw err;
-    }); */
 }
 
 /**
@@ -348,22 +282,20 @@ export const getBetRank = (...args) => {
  */
 export const getLastNumber = (...args) => {
     if (isDev) {
-
-
         return new Promise((resolve, reject) => {
             const data = {
-                "username": "hsia01",
-                "lastnumber": "20190628-1297",
-                "lastballs": "5.65",
-                "ballInfo": null,
-                "isstop": 0,
-                "number": "20190628-1298",
-                "issueCode": 201906289011298,
-                "nowtime": "2019/06/28 14:07:07",
-                "nowstoptime": "2019/06/28 14:07:27",
-                "resulttime": "2019/06/28 14:06:46",
-                "winlists": null,
-                "prizeBet": null
+                ballInfo: null,
+                isstop: 0,
+                issueCode: 201907109011355,
+                lastballs: "1.26",
+                lastnumber: "20190710-1354",
+                nowstoptime: "2019/07/10 14:41:49",
+                nowtime: "2019/07/10 14:41:16",
+                number: "20190710-1355",
+                prizeBet: null,
+                resulttime: "2019/07/10 14:41:13",
+                username: "hsia01",
+                winlists: null
             }
             resolve(data);
         }).catch(err => {
@@ -372,33 +304,6 @@ export const getLastNumber = (...args) => {
         });
     } else {
         return generateEvent('getLastNumber')();
-
-        // const url = new URL(`${pageLocation}/${apiUrl['getLastNumber']}`);
-        // url.search = new URLSearchParams({});
-    
-        // return new Promise((resolve, reject) => {
-        //     fetch(url)
-        //     .then(function(response){
-        //         try {
-        //             return response.json();
-        //         } catch(err) {
-        //             reject(err)
-        //         }
-        //     })
-        //     .then(function(data){
-        //         // console.log(data);
-        //         resolve(data);
-        //     })
-        //     .catch(function(err){
-        //         console.log(err);
-        //         reject(err)
-        //         // message.error('请求超时无响应');
-        //     });
-            
-        // }).catch(err => {
-        //     message.error('请求超时无响应');
-        //     // throw err;
-        // });
     }
 
 }
@@ -472,38 +377,6 @@ export const submitBet = (...args) => {
             reject(err)
             message.error('请求超时无响应');
         });
-
-        // const data = {
-        //     "isSuccess": 1,
-        //     "msg": "恭喜您投注成功~!",
-        //     "type": "success",
-        //     "balance": 0.0,
-        //     "data": {
-        //         "handingcharge": null,
-        //         "projectId": "DCQC1906260355qd",
-        //         "writeTime": "2019-06-26 15:35:53",
-        //         "result": null,
-        //         "totalprice": 200,
-        //         "winMoney": null,
-        //         "winNum": null,
-        //         "orderId": 29395527,
-        //         "number": "20190626-035",
-        //         "diamondLv": null,
-        //         "diamondTimes": null,
-        //         "tplData": {
-        //             "msg": "恭喜您投注成功~!",
-        //             "lotteryType": null,
-        //             "currentGameNumber": null,
-        //             "balls": null,
-        //             "bitDate": null
-        //         },
-        //         "blockadeInfo": null,
-        //         "orderData": null,
-        //         "overMutipleData": null,
-        //         "list": null
-        //     }
-        // }
-        // resolve(data);
     }).catch(err => {
         message.error('请求超时无响应');
         // throw err;

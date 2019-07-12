@@ -32,8 +32,6 @@ export class counter extends Component {
         
         if ((this.props.currentIssues !== prevProps.currentIssues) && prevProps.currentIssues === '') {
             // first update
-            // console.log('new rs data');
-            console.log('counter init',this.props.animationStatus);
             this.setState({
                 playerIssues: this.props.currentIssues
             }, () => {
@@ -103,23 +101,31 @@ export class counter extends Component {
     
 
     getListdata () {
+        if (!socket.connected && socket.initConnected) {
+            console.log('avoid socket.emit');
+            return ;
+        }
+        console.log('socket log', new Date().getTime())
         socket.emit('getBetListEvent', {webIssueCode: this.state.playerIssues},(response) => {
             // console.log(response);
-            console.log('update list');
-            this.setState({
-                orderByUnit: 'betAmount',
-                playerList: response.betList,
-                total: {
-                    amount: response.totalBetAmount,
-                    playerNum: response.betList.length
-                }
-            }, () => {
-                console.log('after load state');
-                if (!this.isSocketOn) {
-                    this.startReceiveList();
-                }
-                
-            });
+            if (response) {
+                console.log('update list');
+                console.log('socket log', new Date().getTime())
+                this.setState({
+                    orderByUnit: 'betAmount',
+                    playerList: response.betList,
+                    total: {
+                        amount: response.totalBetAmount,
+                        playerNum: response.betList.length
+                    }
+                }, () => {
+                    console.log('after load state');
+                    if (!this.isSocketOn) {
+                        this.startReceiveList();
+                    }
+                    
+                });
+            }
         });
     }
 

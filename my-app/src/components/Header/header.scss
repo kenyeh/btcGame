@@ -42,26 +42,115 @@
 }
 
 .gameModalStyle {
+    .ant-modal-content {
+        height: 497px;
+        background: url('../../images/modal-bg.png') no-repeat center top / 100% auto;
+    }
+    .ant-modal-close-x {
+        svg {
+            fill: #fff;
+        }
+    }
     .ant-modal-footer {
         display: none;
     }
     .ant-modal-body {
         padding: 0;
+        padding-top: 14px;
     }
     .game-modal-content {
         position: relative;
         width: 860px;
         height: 358px;
+
+        .help {
+            margin-top: 30px;
+            padding-right: 65px;
+            text-align: right;
+            color: #ffa200;
+            font-size: 16px;
+            line-height: normal;
+            .help-link {
+                color: #ffa200;
+                text-decoration: underline;
+            }
+        }
+    }
+    .instruction-title-img {
+        width: 153px;
+        height: 40px;
+        margin: 0 auto;
+        background: url('../../images/pop-modal-title-1.png') no-repeat center top / 100% auto;
+    }
+    .source-title-img {
+        width: 153px;
+        height: 40px;
+        margin: 0 auto;
+        background: url('../../images/pop-modal-title-2.png') no-repeat center top / 100% auto;
+    }
+    .modal-game-tips {
+        margin-top: 35px;
+        text-align: center;
+        color: #ffa200;
+        font-size: 16px;
+        line-height: normal;
     }
     
     .game-carousel-box {
         width: 740px;
         height: 222px;
         margin: 0 auto;
+        margin-top: 10px;
 
         .carousel-card {
             width: 740px;
             height: 222px;
+
+            .card {
+                padding: 0 10px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .text-content {
+                p {
+                    margin: 0;
+                }
+                flex-grow: 1;
+                color: #fff;
+                .c-title {
+                    font-size: 38px;
+                    line-height: 45px;
+                    text-align: left;
+                }
+                .c-sub-title {
+                    font-size: 28px;
+                    line-height: 35px;
+                    text-align: left;
+                }
+                p {
+                    font-size: 18px;
+                    line-height: 26px;
+                }
+                .text {
+                    margin-top: 30px;
+                }
+            }
+            .pic {
+                flex-shrink: 0;
+                width: 407px;
+                height: 222px;
+            }
+            &.c1 {
+                .text-content p{
+                    padding-left: 10px;
+                }
+                .text {
+                    padding-right: 40px;
+                }
+            }
+            
         }
 
         .ant-carousel {
@@ -70,12 +159,23 @@
                 height: 143px;
                 margin-top: -71.5px;
     
-                background-color: #000;
+                background: url('../../images/btn-carousel-change.png') no-repeat center top / 100% auto;
+                &:active {
+                    transform: scale(0.95);
+                }
+            }
+            .slick-next {
+                transform: scaleX(-1);
+                &:active {
+                    transform: scale(-0.95, 0.95);
+                }
             }
 
             .slick-dots {
-
+                bottom: -90px;
+                height: auto;
                 li {
+                    margin: 0 5px;
                     button{
                         opacity: 1;
                         width: 20px;
@@ -93,5 +193,76 @@
                 }
             }
         }
+    }
+    .instruction .carousel-card{
+        &.c1 .pic{
+            background: url('../../images/pop-instruction-img-1.png') no-repeat center top / 100% auto;
+        }
+        &.c2 .pic{
+            background: url('../../images/pop-instruction-img-2.png') no-repeat center top / 100% auto;
+        }
+        &.c3 .pic{
+            background: url('../../images/pop-instruction-img-3.png') no-repeat center top / 100% auto;
+        }
+        &.c4 .pic{
+            background: url('../../images/pop-instruction-img-4.png') no-repeat center top / 100% auto;
+        }
+    }
+    .source .carousel-card{
+        &.c1 .pic{
+            background: url('../../images/pop-source-img-1.png') no-repeat center bottom / auto 100%;
+        }
+        &.c2 .pic{
+            background: url('../../images/pop-source-img-2.png') no-repeat center bottom / auto 100%;
+        }
+    }
+
+    .source {
+        .game-carousel-box {
+            height: 350px;
+            margin-top: 20px;
+            .carousel-card {
+                height: 350px;
+                padding: 0 40px;
+
+                .text-content {
+                    p {
+                        margin-top: 5px;
+                    }
+                    .qrcode-box {
+                        width: 330px;
+                        height: 140px;
+                        margin-top: 20px;
+                        background-color: #fff;
+                        border-radius: 8px;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: center;
+                        .qrcode-img {
+                            width: 110px;
+                            height: 110px;
+                            margin-right: 30px;
+                            background: url('../../images/qrcode.png') no-repeat center top / 100% auto;
+                        }
+                        .qrcode-text {
+                            font-size: 24px;
+                            line-height: 36px;
+                            color: #000;
+                        }
+                    }
+                }
+                .pic {
+                    margin-left: 30px;
+                    width: 287px;
+                    height: 352px;
+                }
+            }
+
+            .ant-carousel .slick-dots{
+                bottom: -30px;
+            }
+        }
+        
     }
 }

@@ -36,8 +36,6 @@ const game = (state = initialState, action) => {
 				...state,
 				'gameConfigData': {
 					...state.gameConfigData,
-					// userId: action.gameConfigData.userId,
-					// userName: action.gameConfigData.userName,
 					userNickName: action.gameConfigData.userNickName
 				}
 			};

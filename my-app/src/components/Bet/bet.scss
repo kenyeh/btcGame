@@ -237,9 +237,12 @@
                     left: -20px;
                     background: url('../../images/light.png') no-repeat top center / 100% auto;
                 }
-                &.spin::after{
-                    animation: spin 4s infinite linear ;
-                }
+                // &.spin::after{
+                //     animation: spin 4s infinite linear ;
+                // }
+            }
+            &:hover .prize-rate::after{
+                animation: spin 4s infinite linear ;
             }
 
             .ruler-section {
@@ -310,6 +313,10 @@
                         color: #11ffdb;
                         line-height: 25px;
                         text-align: center;
+
+                        &.small {
+                            font-size: 12px;
+                        }
                     }
                 }
                 .ruler-start {

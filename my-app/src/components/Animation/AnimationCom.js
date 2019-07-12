@@ -213,7 +213,7 @@ export default class AnimationCom extends Component {
         let flyingStarClass = '';
         let universe = '';
 
-
+        // console.log('get animationStatus', Status);
         switch (Status) {
             case 'loading':
                 groundClass = ' ground-shake';

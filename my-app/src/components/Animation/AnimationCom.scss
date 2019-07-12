@@ -69,6 +69,11 @@ $launcher-during: 0.8s;
                     top: random(1000) + px;
                     left: random(1920) + px;
                     @if $i <= 4 {
+                        $lr: $i % 2;
+                        @if $lr == 0 {
+                            $lr: 1000
+                        }
+                        left: (300 * $i + $lr ) + px;
                         width: 1px;
                         height: #{(2500 - $counter) * .1 - 50*$i}px;
                     }

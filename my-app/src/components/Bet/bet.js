@@ -56,6 +56,9 @@ export class bet extends Component {
             gameRetPoint: 0
         };
 
+        this.IsPageHidden = false;
+        this.countupCheck = false; // for fixed bug
+        this.scrollMax = 99999.9;
         this.trendIssueCode = 0
         NP.enableBoundaryChecking(false);
     }
@@ -70,7 +73,7 @@ export class bet extends Component {
             line: 5,
             lenth: 30,
         }).then(rs => {
-            console.log('getBetAward', rs)
+            // console.log('getBetAward', rs)
             this.setState({
                 gameRetPoint: rs.data.gameTips.retPoint / 100
             },() => {
@@ -79,47 +82,50 @@ export class bet extends Component {
         })
 
         // console.log(CountUp);
-
-        // getLastNumber().then(rs => {
-        //     if (rs) {
-        //         this.setState({
-        //             issues: rs.lastnumber,
-        //             betCurrentIssues: rs.number,
-        //             betIssueCode: rs.issueCode,
-        //             contdownIssues: rs.number
-        //         }, () => {
-        //             dispatch(setLastNumber(rs));
-        //             this.betStatus(rs);
-        //             this.trendIssueCode = rs.issueCode;
-        //             dispatch(setTrendIssueCode(rs.issueCode))
-        //         })
-        //     }
-        // })
         this.getLastnumberData();
+
+        this.visibilityStateListener();
         
     }
 
 
-    componentDidUpdate(prevProps) {
-        // 更新當期遊戲資料
-        /* if ((this.props.lastNumberData !== prevProps.lastNumberData) && prevProps.lastNumberData === {}) {
-            console.log(this.props.lastNumberData);
-            this.betStatus(this.props.lastNumberData);
-            this.trendIssueCode = this.props.lastNumberData.issueCode;
-            this.props.dispatch(setTrendIssueCode(this.props.lastNumberData.issueCode));
-            // // 初始化 更新
-            // if (!this.trendIssueCode) {
-            //     this.props.dispatch(setTrendIssueCode(this.props.lastNumberData.issueCode));
-            // }
-            
-            // this.trendIssueCode = this.props.lastNumberData.issueCode
-        } */
-    }
-
-
     componentWillUnmount() {
-        clearTimeout(this.gameTimer);
+        clearInterval(this.gameTimer);
     }
+
+    visibilityStateListener() {
+        const me = this
+        document.addEventListener('visibilitychange', function () {
+            // 用户离开了当前页面
+            if (document.visibilityState === 'hidden') {
+                me.IsPageHidden = true;
+                me.countupCheck = false;
+                // console.log('visibilitychange', me.IsPageHidden);
+            }
+
+            if (document.visibilityState === 'visible') {
+                me.IsPageHidden = false;
+                // console.log('visibilitychange', me.IsPageHidden);
+
+                const remainSec = me.state.countdownSec - 30; // 動畫剩餘時間
+                // console.log('remainSec', remainSec);
+                if (remainSec > 0) {
+                    me.setState({
+                        showCountdown: false,
+                        showStatusHeigh: false,
+                        showResultHeight: true
+                    }, () => {
+                        setTimeout(() => {
+                            me.gameRecover();
+                        }, remainSec * 1000);
+                    });
+                } else {
+                    me.gameRecover();
+                }
+            }
+        });
+    }
+
 
     betStatus(lastData) {
         const nowstoptime = new Date(lastData.nowstoptime).getTime()
@@ -127,22 +133,17 @@ export class bet extends Component {
         const resulttime = new Date(lastData.resulttime).getTime()
         const countdownSec = nowstoptime - nowtime
 
-        console.log('game time', countdownSec);
-
         if (this.state.betCurrentIssues === '') {
             this.setState({
                 betCurrentIssues: lastData.number
             })
         }
         
-        
         if (resulttime > nowtime) {
             // 當期尚未開始
             this.reloadLastnumber();
         } else {
-            
             if (countdownSec > 0) {
-                
                 this.setState({
                     countdownSec: Math.floor(countdownSec / 1000)
                 }, ()=> {
@@ -157,7 +158,6 @@ export class bet extends Component {
     }
 
     reloadLastnumber () {
-        
         console.log('reloadLastnumber');
         this.setState({
             showCountdown: false,
@@ -173,22 +173,19 @@ export class bet extends Component {
         const countdown = () => {
             
             const timer_s = this.state.countdownSec - 1;
-            // const timer_s_str = '' + timer_s;
-            // if (timer_s < 10) {
-            //     timer_s_str = '0' + timer_s;
-            // }
+            
             this.setState({
                 countdownSec: timer_s,
             });
 
             if (timer_s === 0) {
                 // end issues
+                clearInterval(this.gameTimer);
                 this.startGetLastnumber();
             }
         }
 
         if (this.state.countdownSec > 0) {
-            clearTimeout(this.gameTimer);
             this.gameTimer = setInterval(countdown, 1000);
         }
     }
@@ -196,7 +193,6 @@ export class bet extends Component {
     getLastnumberData () {
         const { dispatch } = this.props;
         const lastIssues = this.state.issues
-        // const currentIssues = this.props.currentIssues
         const me = this
         console.log('call last number');
         getLastNumber().then(rs => {
@@ -224,18 +220,23 @@ export class bet extends Component {
                 }
 
                 // for dev
-                // setTimeout(()=> {
-                //     this.trendIssueCode = rs.issueCode;
-                //     this.setState({
-                //         issues: rs.lastnumber,
-                //         betCurrentIssues: rs.number,
-                //         betIssueCode: rs.issueCode,
-                //         contdownIssues: rs.number
-                //     }, () => {
-                //         this.betStatus(rs);
-                //         this.updateLastnumberData(rs);
-                //     })
-                // },2000)
+                /* setTimeout(()=> {
+                    this.trendIssueCode = rs.issueCode;
+                    const isInitUpdate = false
+                    if (isInitUpdate) {
+                        dispatch(setTrendIssueCode(this.trendIssueCode));
+                    }
+                    
+                    this.setState({
+                        issues: rs.lastnumber,
+                        betCurrentIssues: rs.number,
+                        betIssueCode: rs.issueCode,
+                        contdownIssues: rs.lastnumber
+                    }, () => {
+                        this.betStatus(rs);
+                        this.updateLastnumberData(rs);
+                    })
+                },2000) */
                 
             }
         }).catch((err) => {
@@ -277,21 +278,20 @@ export class bet extends Component {
 			}));
         }
 
-        const countupTime = (nowstoptime - nowtime) / 1000 - 33;
+        const countupTime = betTime - 33;
         // console.log(`(nowstoptime - nowtime) / 1000 = ${(nowstoptime - nowtime) / 1000 }`);
         // console.log(`(${nowstoptime} - ${nowtime} ) / 1000 - 33 = ${countupTime}`);
         
-
-        console.log('updateLastnumber', data);
-        // dispatch(setLastNumber(data));
-        dispatch(setAnimationStatus('launch'));
         dispatch(setTrendIssueCode(trendIssueCode));
+        if (!this.IsPageHidden) {
+            dispatch(setAnimationStatus('launch'));
+        }
         
         
         this.setState({
             Loading: false,
             readySubmit: false,
-            showStatusHeigh: true,
+            showStatusHeigh: this.IsPageHidden ? false : true,
             countUpProps: {
                 start: 0,
                 end: rsHeight,
@@ -302,12 +302,20 @@ export class bet extends Component {
             }
         }, () => {
             // 開始計數高度
-            this.countupStarter.click();
+            // console.log('page hidden', this.IsPageHidden);
+            if (!this.IsPageHidden) {
+                this.countupCheck = true;
+                this.countupStarter.click();
+            } else {
+                this.gameRecover();
+            }
+            
+            
             dispatch(setPlayResult({
                 currentIssues: data.number,
-		        lastIssues: data.lastnumber,
+                lastIssues: data.lastnumber,
                 height: rsHeight,
-		        time: Math.floor((countupTime > 0.5 ? countupTime : 0.5) * 1000)
+                time: Math.floor((countupTime > 0.5 ? countupTime : 0.5) * 1000)
             }));
         })
     }
@@ -321,6 +329,7 @@ export class bet extends Component {
             Loading: true,
             showCountdown: false
         });
+
         dispatch(setAnimationStatus('loading'));
         
         this.getLastnumberData();
@@ -345,26 +354,29 @@ export class bet extends Component {
             range = 1
         }
 
-
         let rulerOn = Number((startDistance + Math.abs((iScrollInstanceDistance) / distance) / range + 1).toFixed(1))
-        
+
         return rulerOn
     }
 
     onScroll = (iScrollInstance) => {
-        
+        const maxOn = this.scrollMax // 最大值
         let iScrollInstanceDistance = iScrollInstance.x;
-        // let range = 10;
         let step = this.state.rulerStep
-        // let step = 400
         let rulerLenth = 100 / 2;
 
         let rulerOn = this.getScrollRuler(step, iScrollInstanceDistance);
         
-
         if (step > 1) {
             rulerOn = rulerOn + ((step - 1) * rulerLenth) - 1
             // 預留尺標箭頭左邊 1
+        }
+
+        if (rulerOn >= maxOn) {
+            rulerOn = maxOn
+            this.refs.iScroll.withIScroll(function(iScroll) {
+                iScroll.scrollTo(-2099, 0);
+            })
         }
 
         this.setState({
@@ -375,21 +387,21 @@ export class bet extends Component {
     }
 
     onScrollStart = () => {
-
-        this.setState({
-            isScrolling: true
-        });
+        // this.setState({
+        //     isScrolling: true
+        // });
     }
 
     onScrollEnd = (iScrollInstance) => {
         // console.log('onScrollEnd');
-        const maxOn = 99999.9 // 最大值
+        const maxOn = this.scrollMax // 最大值
         let iScrollInstanceDistance = iScrollInstance.x;
         let rulerLenth = 100 / 2;
         let step = this.state.rulerStep
         let rulerCheck = step * rulerLenth
         let lessSet = false
         let addSet = false
+        // console.log(iScrollInstance.x);
         // console.log(` start rulerStep:${step}  rulerCheck:${rulerCheck} `);
 
         const scrollToSet = (lessOrAdd) => {
@@ -410,7 +422,7 @@ export class bet extends Component {
                     setDistance = 2100
                 }
             }
-            console.log(`step:${step}   withIScroll: ${iScrollInstanceDistance} + ${setDistance}`);
+            // console.log(`step:${step}   withIScroll: ${iScrollInstanceDistance} + ${setDistance}`);
             this.refs.iScroll.withIScroll(function(iScroll) {
                 iScroll.scrollTo(iScrollInstanceDistance + setDistance, 0);
             })
@@ -426,11 +438,14 @@ export class bet extends Component {
             // console.log('rulerOn:', rulerOn);
         }
 
+        // console.log('rulerOn:', rulerOn);
         if (rulerOn >= maxOn) {
             rulerOn = maxOn;
             this.refs.iScroll.withIScroll(function(iScroll) {
-                iScroll.scrollTo(-1044, 0);
+                iScroll.scrollTo(-2099, 0);
             })
+
+            // console.log('rulerOn:', rulerOn);
         } else {
             // 每 rulerLenth 調整尺標  step判斷尺標階段 尺標長度 rulerLenth 
             if (rulerOn > rulerCheck) {
@@ -445,7 +460,7 @@ export class bet extends Component {
 
         this.setState({
             rulerStep: step,
-            isScrolling: false
+            // isScrolling: false
         }, () => {
             this.calcPayout();
             // 設定尺標 更新尺標後 設定尺標位置
@@ -455,7 +470,6 @@ export class bet extends Component {
             if (addSet) {
                 scrollToSet('add');
             }
-            console.log(iScrollInstanceDistance);
         });
     }
 
@@ -493,18 +507,6 @@ export class bet extends Component {
             // 預留尺標箭頭左邊 1
             num = num + 1 - ((step - 1) * rulerLenth)
         }
-        
-        /* for example
-        * 10: -503
-        * 25: -1133
-        * 50: -2183
-        * 51: -43
-        * 60: -422
-        * 100: -2101
-        * 110: -420
-        * 150: -2101
-        * 160: -420
-        * */
         
         distanceScroll -=  NP.plus(((num - 1 - startOn) * range) * distance, addDistance);
         // console.log(`${distanceScroll} = ((${num} - 1 - ${startOn}) * ${range}) * ${distance} + ${addDistance} `);
@@ -572,11 +574,8 @@ export class bet extends Component {
     }
 
     betNumberChange = (event) => {
-        const MaxNum = 99999.9
+        const MaxNum = this.scrollMax
         let num = event.target.value;
-        
-        // num = num.replace(/[^\d.]/g, "").replace(/^\./g, "").replace(/\.{2,}/g, ".").replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-        // num = num.replace(/^(-)*(\d+)\.(\d).*$/, '$1$2.$3');//只能输入个小数
 
         if(/^\d+\.?\d{0,2}$/.test(num)){
             // num = num;
@@ -584,10 +583,13 @@ export class bet extends Component {
             num = num.substring(0,num.length-1);
         } 
         
+        if (Number(num) === 0) {
+            num = 1.01
+        }
         if (Number(num) >= MaxNum) {
             num = MaxNum
         }
-        console.log(num);
+        // console.log(num);
         this.setState({
             rulerNumber: num
         }, () => {
@@ -633,7 +635,7 @@ export class bet extends Component {
             }],
             "amount": `${Number(this.state.amount).toFixed(1)}0`
         }
-        console.log(submitForm);
+        // console.log(submitForm);
         
         submitBet(submitForm).then(rs => {
             if (rs.isSuccess === 1) {
@@ -650,21 +652,24 @@ export class bet extends Component {
 
     countupEnd = () => {
         const { dispatch } = this.props;
-        console.log('countup end!');
-
-        dispatch(setAnimationStatus('flyaway'));
-        setTimeout(() => {
-            this.setState({
-                showResultHeight: true
-            });
+        // console.log('countup end!');
+        // console.log('countupCheck---', this.countupCheck);
+        if (this.countupCheck) {
+            dispatch(setAnimationStatus('flyaway'));
             setTimeout(() => {
-                this.gameRecover();
-            }, 1500);
-        }, 500);
+                this.setState({
+                    showResultHeight: true
+                });
+                setTimeout(() => {
+                    this.gameRecover();
+                }, 1500);
+            }, 500);
+        }
     }
 
     gameRecover = () => {
         const { dispatch } = this.props;
+        this.countupCheck = false
         this.setState({
             contdownIssues: this.state.betCurrentIssues,
             Loading: false,
@@ -685,8 +690,7 @@ export class bet extends Component {
         const rulerStep = this.state.rulerStep
         let rulerLenth = 100
         // 初始尺標為 rulerStart + ruler
-        // 每次尺標間距 50
-        // const rulerStep = 2
+        // 每次尺標間距 100
         const rulerStart = (<div className="ruler-start" key={1}>
             <span>1</span>
             <span>2</span>
@@ -711,7 +715,7 @@ export class bet extends Component {
 
         // console.log(`make ruler startDegree:${startDegree} endDegree:${endDegree}`);
         for (startDegree ; startDegree < endDegree; startDegree++) {
-            ruleItem.push(<span key={startDegree}>{startDegree}</span>);
+            ruleItem.push(<span className={ startDegree >= 10000 ? 'small' : ''}  key={startDegree}>{startDegree}</span>);
         }
 
         rulerContent.push(
