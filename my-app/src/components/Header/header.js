@@ -10,6 +10,8 @@ class header extends Component {
             modalInstruction: false,
             modalSourceInfo: false
         };
+        this.helpLink = `${window.location.protocol}${window.indexServer}/help/queryLotteryDetail?helpId=2123`
+        // console.log(this.helpLink);
     }
 
     ToggleInstruction = () => {
@@ -44,7 +46,7 @@ class header extends Component {
                     
                     <div className="game-modal-content instruction">
                         <div className="help">
-                        详情可查看"<a href="/help/goIndex" className="help-link">帮助中心</a>"
+                        详情可查看"<a href={this.helpLink} className="help-link">帮助中心</a>"
                         </div>
                         <div className="game-carousel-box">
                             <Carousel

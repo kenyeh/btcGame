@@ -64,12 +64,14 @@
         height: 358px;
 
         .help {
+            display: block;
             margin-top: 30px;
             padding-right: 65px;
             text-align: right;
             color: #ffa200;
             font-size: 16px;
             line-height: normal;
+            background: transparent;
             .help-link {
                 color: #ffa200;
                 text-decoration: underline;
