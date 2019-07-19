@@ -286,14 +286,14 @@ export const getLastNumber = (...args) => {
             const data = {
                 ballInfo: null,
                 isstop: 0,
-                issueCode: 201907109011355,
-                lastballs: "1.26",
-                lastnumber: "20190710-1354",
-                nowstoptime: "2019/07/10 14:41:49",
-                nowtime: "2019/07/10 14:41:16",
-                number: "20190710-1355",
+                issueCode: 201907189011299,
+                lastballs: "29.22",
+                lastnumber: "20190718-1298",
+                nowstoptime: "2019/07/18 14:08:23",
+                nowtime: "2019/07/18 14:07:44",
+                number: "20190718-1299",
                 prizeBet: null,
-                resulttime: "2019/07/10 14:41:13",
+                resulttime: "2019/07/18 14:07:37",
                 username: "hsia01",
                 winlists: null
             }

@@ -7,7 +7,7 @@ import NP from 'number-precision'
 import { setLastNumber, setAnimationStatus, setPlayResult, setTrendIssueCode } from '../../actions';
 import { getLastNumber, submitBet , getBetAward } from '../../services';
 
-import CountUp from 'react-countup';
+import AnimatedNumber from "animated-number-react";
 
 import { Spin, Icon , message} from 'antd';
 
@@ -33,13 +33,10 @@ export class bet extends Component {
                 // startX: -8.4,
                 probeType: 3
             },
-            countUpProps: {
-                start: 0,
-                end: 2.2,
-                delay: 0.8,
-                decimals: 2,
-                duration: 4,
-                useEasing: false,
+            AnimatedNumberProps: {
+                value: 0,
+                duration: 0,
+                delay: 0.8
             },
             isScrolling: false,
             rulerNumber: 1.01,
@@ -57,9 +54,9 @@ export class bet extends Component {
         };
 
         this.IsPageHidden = false;
-        this.countupCheck = false; // for fixed bug
+        this.RunEnd = false; // fixed requestAnimationFrame bug form change page
         this.scrollMax = 99999.9;
-        this.trendIssueCode = 0
+        this.trendIssueCode = 0;
         NP.enableBoundaryChecking(false);
     }
 
@@ -83,8 +80,6 @@ export class bet extends Component {
 
         // console.log(CountUp);
         this.getLastnumberData();
-
-        this.visibilityStateListener();
         
     }
 
@@ -93,45 +88,14 @@ export class bet extends Component {
         clearInterval(this.gameTimer);
     }
 
-    visibilityStateListener() {
-        const me = this
-        document.addEventListener('visibilitychange', function () {
-            // 用户离开了当前页面
-            if (document.visibilityState === 'hidden') {
-                me.IsPageHidden = true;
-                me.countupCheck = false;
-                // console.log('visibilitychange', me.IsPageHidden);
-            }
-
-            if (document.visibilityState === 'visible') {
-                me.IsPageHidden = false;
-                // console.log('visibilitychange', me.IsPageHidden);
-
-                const remainSec = me.state.countdownSec - 30; // 動畫剩餘時間
-                // console.log('remainSec', remainSec);
-                if (remainSec > 0) {
-                    me.setState({
-                        showCountdown: false,
-                        showStatusHeigh: false,
-                        showResultHeight: true
-                    }, () => {
-                        setTimeout(() => {
-                            me.gameRecover();
-                        }, remainSec * 1000);
-                    });
-                } else {
-                    me.gameRecover();
-                }
-            }
-        });
-    }
-
 
     betStatus(lastData) {
         const nowstoptime = new Date(lastData.nowstoptime).getTime()
         const nowtime = new Date(lastData.nowtime).getTime()
         const resulttime = new Date(lastData.resulttime).getTime()
-        const countdownSec = nowstoptime - nowtime
+        const countdownSec = nowstoptime - nowtime;
+
+        // console.log(`resulttime=${resulttime}   nowtime=${nowtime}   countdownSec=${countdownSec}`);
 
         if (this.state.betCurrentIssues === '') {
             this.setState({
@@ -162,6 +126,7 @@ export class bet extends Component {
         this.setState({
             showCountdown: false,
             Loading: true,
+            betCurrentIssues: this.state.issues
         },() => {
             setTimeout(() => {
                 this.getLastnumberData();
@@ -192,14 +157,16 @@ export class bet extends Component {
 
     getLastnumberData () {
         const { dispatch } = this.props;
-        const lastIssues = this.state.issues
+        const CurrentIssues = this.state.betCurrentIssues
         const me = this
         console.log('call last number');
         getLastNumber().then(rs => {
             if (rs) {
-                if (lastIssues === rs.lastnumber) {
+                if (CurrentIssues === rs.number) {
                     // 尚未更新獎期
-                    setTimeout(me.getLastnumberData.bind(me), 1000);
+                    console.log(`尚未更新獎期 ${CurrentIssues}=>${rs.number}`);
+                    setTimeout(me.getLastnumberData.bind(me), 1500);
+                    
                 } else {
                     this.trendIssueCode = rs.issueCode;
                     const isInitUpdate = this.state.issues === '' ? true : false
@@ -253,12 +220,12 @@ export class bet extends Component {
         const nowtime = new Date(data.nowtime).getTime()
         const rsHeight = Number(data.lastballs);
         const nowstoptime = new Date(data.nowstoptime).getTime()
-        // const rsHeight = 2.5;
+        const resulttime = new Date(data.resulttime).getTime()
         
         const betTime = (nowstoptime - nowtime) / 1000;
         console.log('betTime', betTime);
 
-        if (betTime <= 0) {
+        if (betTime <= 0 || resulttime > nowtime) {
             // for reload
             return ;
         }
@@ -278,38 +245,26 @@ export class bet extends Component {
 			}));
         }
 
-        const countupTime = betTime - 33;
+        const countupTime = NP.minus(betTime, 32.8);
         // console.log(`(nowstoptime - nowtime) / 1000 = ${(nowstoptime - nowtime) / 1000 }`);
-        // console.log(`(${nowstoptime} - ${nowtime} ) / 1000 - 33 = ${countupTime}`);
+        // console.log(`(${nowstoptime} - ${nowtime} ) / 1000 - 32 = ${countupTime}`);
         
         dispatch(setTrendIssueCode(trendIssueCode));
-        if (!this.IsPageHidden) {
-            dispatch(setAnimationStatus('launch'));
-        }
+        dispatch(setAnimationStatus('launch'));
         
-        
+        // 開始計數高度
         this.setState({
             Loading: false,
             readySubmit: false,
-            showStatusHeigh: this.IsPageHidden ? false : true,
-            countUpProps: {
-                start: 0,
-                end: rsHeight,
-                delay: 0.8,
-                decimals: 2,
-                duration: countupTime > 0 ? countupTime : 0 ,
-                useEasing: false,
+            showCountdown: false,
+            showStatusHeigh: true,
+            AnimatedNumberProps: {
+                value: rsHeight,
+                duration: countupTime > 0 ? countupTime * 1000 : 0,
+                delay: 800
             }
         }, () => {
-            // 開始計數高度
-            // console.log('page hidden', this.IsPageHidden);
-            if (!this.IsPageHidden) {
-                this.countupCheck = true;
-                this.countupStarter.click();
-            } else {
-                this.gameRecover();
-            }
-            
+            this.RunEnd = true;
             
             dispatch(setPlayResult({
                 currentIssues: data.number,
@@ -650,35 +605,60 @@ export class bet extends Component {
         })
     }
 
+    countupBeginCheck = () => {
+        // console.log('begin at sec', this.state.countdownSec);
+        if (this.state.countdownSec <= 30) {
+            this.RunEnd = false;
+            this.setState({
+                AnimatedNumberProps: {
+                    value: 0,
+                    duration: 0,
+                    delay: 0
+                }
+            });
+        }
+    }
     countupEnd = () => {
         const { dispatch } = this.props;
-        // console.log('countup end!');
-        // console.log('countupCheck---', this.countupCheck);
-        if (this.countupCheck) {
-            dispatch(setAnimationStatus('flyaway'));
-            setTimeout(() => {
-                this.setState({
-                    showResultHeight: true
-                });
-                setTimeout(() => {
-                    this.gameRecover();
-                }, 1500);
-            }, 500);
+        // console.log('RunEnd---', this.RunEnd, this.state.AnimatedNumberProps.value);
+        if (this.state.AnimatedNumberProps.duration === 0 || !this.RunEnd) {
+            this.gameRecover();
+            return ;
         }
+        
+        dispatch(setAnimationStatus('flyaway'));
+        setTimeout(() => {
+            this.setState({
+                showResultHeight: true
+            });
+            setTimeout(() => {
+                this.gameRecover();
+            }, 1500);
+        }, 500);
+        
     }
 
     gameRecover = () => {
         const { dispatch } = this.props;
-        this.countupCheck = false
+        this.RunEnd = false
         this.setState({
             contdownIssues: this.state.betCurrentIssues,
             Loading: false,
             showCountdown: true,
             showStatusHeigh: false,
+            AnimatedNumberProps: {
+                value: 0,
+                duration: 0,
+                delay: 0
+            },
             showResultHeight: false
         }, () => {
             dispatch(setAnimationStatus(''));
             dispatch(setTrendIssueCode(this.trendIssueCode));
+            // fixed requestAnimationFrame bug form change page
+            this.countupComRef.setState({
+                animatedValue: 0
+            });
         });
     }
     
@@ -729,20 +709,21 @@ export class bet extends Component {
             <div className="bet">
                 <Spin indicator={antIcon} spinning={this.state.Loading}></Spin>
                 <div className={'final-num ' + (this.state.showResultHeight ? 'show' : '')}>
-                    <div className="number">{this.state.countUpProps.end}</div>
+                    <div className="number">{this.state.AnimatedNumberProps.value}</div>
                 </div>
                 <div className="status">
                     <div className="issues">{this.state.contdownIssues}期</div>
                     <div className={'status-heigh ' + (!this.state.showStatusHeigh ? 'hide' : '')}>
                         <i className="icon-heigh"></i>
-                        <CountUp {...this.state.countUpProps} onEnd={this.countupEnd}>
-                            {({ countUpRef, start }) => (
-                                <div>
-                                    <span ref={countUpRef} />
-                                    <button className="countupStart-btn" onClick={start} ref={button => this.countupStarter = button}></button>
-                                </div>
-                            )}
-                        </CountUp>
+                        <div>
+                            <AnimatedNumber
+                                {...this.state.AnimatedNumberProps}
+                                formatValue={(value) => value.toFixed(2)}
+                                begin={this.countupBeginCheck}
+                                complete={this.countupEnd}
+                                ref={(c) => this.countupComRef = c}
+                            />
+                        </div>
                     </div>
                     <div className={'betCountdown ' + (!this.state.showCountdown ? 'hide' : '')}>
                         <div className="title"></div>

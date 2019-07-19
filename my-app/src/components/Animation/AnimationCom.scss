@@ -151,7 +151,7 @@ $launcher-during: 0.8s;
             background: url('../../images/launcher.png') no-repeat top center ;
             background-size: 621px 3487px;
             background-position: 0 top;
-            transition: all .5s;
+            // transition: all .5s;
             &.launcher-ready {
                 background: url('../../images/launcher.png') no-repeat top center ;
                 // background-size: 621px 3487px;
