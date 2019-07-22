@@ -8,7 +8,7 @@ if (window.location.protocol === 'https:') {
     socketPort = ':3103'
 }
 
-const isDev = window.location.hostname === 'localhost' ? true : false;
+export const isDev = window.location.hostname === 'localhost' ? true : false;
 export let socket = {}
 if (!isDev) {
     if (window.location.hostname === 'em.fhhd.net') {

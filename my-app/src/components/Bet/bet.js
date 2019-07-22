@@ -5,7 +5,7 @@ import ReactIScroll from 'react-iscroll'
 import NP from 'number-precision'
 
 import { setLastNumber, setAnimationStatus, setPlayResult, setTrendIssueCode } from '../../actions';
-import { getLastNumber, submitBet , getBetAward } from '../../services';
+import { getLastNumber, submitBet , getBetAward, isDev } from '../../services';
 
 import AnimatedNumber from "animated-number-react";
 
@@ -162,49 +162,52 @@ export class bet extends Component {
         console.log('call last number');
         getLastNumber().then(rs => {
             if (rs) {
-                if (CurrentIssues === rs.number) {
-                    // 尚未更新獎期
-                    console.log(`尚未更新獎期 ${CurrentIssues}=>${rs.number}`);
-                    setTimeout(me.getLastnumberData.bind(me), 1500);
-                    
+                if (isDev) {
+                    // for dev localhost
+                    setTimeout(()=> {
+                        this.trendIssueCode = rs.issueCode;
+                        const isInitUpdate = false
+                        if (isInitUpdate) {
+                            dispatch(setTrendIssueCode(this.trendIssueCode));
+                        }
+                        
+                        this.setState({
+                            issues: rs.lastnumber,
+                            betCurrentIssues: rs.number,
+                            betIssueCode: rs.issueCode,
+                            contdownIssues: rs.lastnumber
+                        }, () => {
+                            this.betStatus(rs);
+                            this.updateLastnumberData(rs);
+                        })
+                    },2000)
                 } else {
-                    this.trendIssueCode = rs.issueCode;
-                    const isInitUpdate = this.state.issues === '' ? true : false
-                    if (isInitUpdate) {
-                        dispatch(setTrendIssueCode(this.trendIssueCode));
+
+                    if (CurrentIssues === rs.number) {
+                        // 尚未更新獎期
+                        console.log(`尚未更新獎期 ${CurrentIssues}=>${rs.number}`);
+                        setTimeout(me.getLastnumberData.bind(me), 1500);
+                        
+                    } else {
+                        this.trendIssueCode = rs.issueCode;
+                        const isInitUpdate = this.state.issues === '' ? true : false
+                        if (isInitUpdate) {
+                            dispatch(setTrendIssueCode(this.trendIssueCode));
+                        }
+                        
+                        this.setState({
+                            issues: rs.lastnumber,
+                            betCurrentIssues: rs.number,
+                            betIssueCode: rs.issueCode,
+                            contdownIssues: rs.lastnumber
+                        }, () => {
+                            this.betStatus(rs);
+                            this.updateLastnumberData(rs);
+                        })
+                        
                     }
-                    
-                    this.setState({
-                        issues: rs.lastnumber,
-                        betCurrentIssues: rs.number,
-                        betIssueCode: rs.issueCode,
-                        contdownIssues: rs.lastnumber
-                    }, () => {
-                        this.betStatus(rs);
-                        this.updateLastnumberData(rs);
-                    })
-                    
                 }
 
-                // for dev
-                /* setTimeout(()=> {
-                    this.trendIssueCode = rs.issueCode;
-                    const isInitUpdate = false
-                    if (isInitUpdate) {
-                        dispatch(setTrendIssueCode(this.trendIssueCode));
-                    }
-                    
-                    this.setState({
-                        issues: rs.lastnumber,
-                        betCurrentIssues: rs.number,
-                        betIssueCode: rs.issueCode,
-                        contdownIssues: rs.lastnumber
-                    }, () => {
-                        this.betStatus(rs);
-                        this.updateLastnumberData(rs);
-                    })
-                },2000) */
-                
             }
         }).catch((err) => {
             console.log('GetLastnumber error', err);
