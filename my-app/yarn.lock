@@ -894,6 +894,13 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/runtime@^7.5.4":
+  version "7.5.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
+  integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/template@^7.1.0", "@babel/template@^7.4.0", "@babel/template@^7.4.4":
   version "7.4.4"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.4.4.tgz#f4b88d1225689a08f5bc3a17483545be9e4ed237"
@@ -1640,19 +1647,6 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
-
-animated-number-react@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/animated-number-react/-/animated-number-react-0.0.2.tgz#2fba104362aac669149a41e5773b9965b93a95e5"
-  integrity sha1-L7oQQ2KqxmkUmkHldzuZZbk6leU=
-  dependencies:
-    animejs "^2.2.0"
-    prop-types "^15.6.1"
-
-animejs@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/animejs/-/animejs-2.2.0.tgz#35eefdfc535b81949c9cb06f0b3e60c02e6fdc80"
-  integrity sha1-Ne79/FNbgZScnLBvCz5gwC5v3IA=
 
 ansi-colors@^3.0.0:
   version "3.2.4"
@@ -4296,6 +4290,14 @@ fast-levenshtein@~2.0.4:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
+
+fast-unique-numbers@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/fast-unique-numbers/-/fast-unique-numbers-4.0.5.tgz#3b6e739f22d6ddd0dd19c90b74ec8dc772d76e0c"
+  integrity sha512-u9kCAFhFzmXqgaakEtdzttby2NnOm2Lbk0BESXZ070USTKGgJsZh8X7ktvJcaCIpU6qCJ0kxkOOEUz40Tt/wOQ==
+  dependencies:
+    "@babel/runtime" "^7.5.4"
+    tslib "^1.10.0"
 
 faye-websocket@^0.10.0:
   version "0.10.0"
@@ -8507,7 +8509,7 @@ prompts@^2.0.1:
     kleur "^3.0.2"
     sisteransi "^1.0.0"
 
-prop-types@15.x, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@15.x, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -10725,6 +10727,11 @@ ts-pnp@1.1.2, ts-pnp@^1.0.0:
   resolved "https://registry.yarnpkg.com/ts-pnp/-/ts-pnp-1.1.2.tgz#be8e4bfce5d00f0f58e0666a82260c34a57af552"
   integrity sha512-f5Knjh7XCyRIzoC/z1Su1yLLRrPrFCgtUAh/9fCSP6NKbATwpOL1+idQVXQokK9GRFURn/jYPGPfegIctwunoA==
 
+tslib@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
+  integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
+
 tslib@^1.8.1, tslib@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
@@ -11459,6 +11466,34 @@ worker-rpc@^0.1.0:
   integrity sha512-P1WjMrUB3qgJNI9jfmpZ/htmBEjFh//6l/5y8SD9hg1Ef5zTTVVoRjTrTEzPrNBQvmhMxkoTsjOXN10GWU7aCg==
   dependencies:
     microevent.ts "~0.1.1"
+
+worker-timers-broker@^5.0.20:
+  version "5.0.20"
+  resolved "https://registry.yarnpkg.com/worker-timers-broker/-/worker-timers-broker-5.0.20.tgz#9d3556efa0e9f043f12369b49fd8a26a9261f69a"
+  integrity sha512-Bjw4czTTpSHEGm4mG12CNM2aoGH4VaiprznubKNoYfKPOxtfCo2GX2uINUSzvD1PJ6qtSDcvorTXR3Je78D3PA==
+  dependencies:
+    "@babel/runtime" "^7.5.4"
+    fast-unique-numbers "^4.0.5"
+    tslib "^1.10.0"
+    worker-timers-worker "^5.0.15"
+
+worker-timers-worker@^5.0.15:
+  version "5.0.15"
+  resolved "https://registry.yarnpkg.com/worker-timers-worker/-/worker-timers-worker-5.0.15.tgz#4069b2947e7e1a43d976f43ac2de4cc8919de4fa"
+  integrity sha512-i+ZCU5WRpbDoJQ18tGI/KSLwX0iwiczyFSKxzSYaTZHoWRsn8B2sidTRDV606qXUaSZgdyNShDMMR3Vr+Oro3w==
+  dependencies:
+    "@babel/runtime" "^7.5.4"
+    tslib "^1.10.0"
+
+worker-timers@^5.0.22:
+  version "5.0.22"
+  resolved "https://registry.yarnpkg.com/worker-timers/-/worker-timers-5.0.22.tgz#313c439b90432edb6b107495b40b5abae49c8421"
+  integrity sha512-W/Uqt3BnKDfaaGG7lhnF/lzD5EVI6bNWU2eAOf4+ZZ9l/Y9gXx3HOQ+2++WBGjwr9yfAdFpYhWEX5r6ttOou5Q==
+  dependencies:
+    "@babel/runtime" "^7.5.4"
+    tslib "^1.10.0"
+    worker-timers-broker "^5.0.20"
+    worker-timers-worker "^5.0.15"
 
 wrap-ansi@^2.0.0:
   version "2.1.0"

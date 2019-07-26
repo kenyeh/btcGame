@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Countup from './Countup'
 
 import iScroll from 'iscroll/build/iscroll-probe'
 import ReactIScroll from 'react-iscroll'
@@ -7,7 +8,6 @@ import NP from 'number-precision'
 import { setLastNumber, setAnimationStatus, setPlayResult, setTrendIssueCode } from '../../actions';
 import { getLastNumber, submitBet , getBetAward, isDev } from '../../services';
 
-import AnimatedNumber from "animated-number-react";
 
 import { Spin, Icon , message} from 'antd';
 
@@ -53,8 +53,6 @@ export class bet extends Component {
             gameRetPoint: 0
         };
 
-        this.IsPageHidden = false;
-        this.RunEnd = false; // fixed requestAnimationFrame bug form change page
         this.scrollMax = 99999.9;
         this.trendIssueCode = 0;
         NP.enableBoundaryChecking(false);
@@ -248,9 +246,9 @@ export class bet extends Component {
 			}));
         }
 
-        const countupTime = NP.minus(betTime, 32.8);
+        const countupTime = NP.minus(betTime, 33);
         // console.log(`(nowstoptime - nowtime) / 1000 = ${(nowstoptime - nowtime) / 1000 }`);
-        // console.log(`(${nowstoptime} - ${nowtime} ) / 1000 - 32 = ${countupTime}`);
+        // console.log(`(${nowstoptime} - ${nowtime} ) / 1000 - 33 = ${countupTime}`);
         
         dispatch(setTrendIssueCode(trendIssueCode));
         dispatch(setAnimationStatus('launch'));
@@ -263,11 +261,10 @@ export class bet extends Component {
             showStatusHeigh: true,
             AnimatedNumberProps: {
                 value: rsHeight,
-                duration: countupTime > 0 ? countupTime * 1000 : 0,
+                duration: countupTime > 0 ? countupTime * 1000 : 200,
                 delay: 800
             }
         }, () => {
-            this.RunEnd = true;
             
             dispatch(setPlayResult({
                 currentIssues: data.number,
@@ -587,13 +584,13 @@ export class bet extends Component {
                 "num": 1
             }],
             "orders": [{
-                "number": this.state.issues,
+                "number": this.state.betCurrentIssues,
                 "issueCode": this.state.betIssueCode,
                 "multiple": 1
             }],
             "amount": `${Number(this.state.amount).toFixed(1)}0`
         }
-        // console.log(submitForm);
+        console.log('submitForm', submitForm);
         
         submitBet(submitForm).then(rs => {
             if (rs.isSuccess === 1) {
@@ -608,26 +605,9 @@ export class bet extends Component {
         })
     }
 
-    countupBeginCheck = () => {
-        // console.log('begin at sec', this.state.countdownSec);
-        if (this.state.countdownSec <= 30) {
-            this.RunEnd = false;
-            this.setState({
-                AnimatedNumberProps: {
-                    value: 0,
-                    duration: 0,
-                    delay: 0
-                }
-            });
-        }
-    }
     countupEnd = () => {
         const { dispatch } = this.props;
-        // console.log('RunEnd---', this.RunEnd, this.state.AnimatedNumberProps.value);
-        if (this.state.AnimatedNumberProps.duration === 0 || !this.RunEnd) {
-            this.gameRecover();
-            return ;
-        }
+        console.log('countupEnd this Issues', this.state.betCurrentIssues);
         
         dispatch(setAnimationStatus('flyaway'));
         setTimeout(() => {
@@ -643,25 +623,20 @@ export class bet extends Component {
 
     gameRecover = () => {
         const { dispatch } = this.props;
-        this.RunEnd = false
         this.setState({
             contdownIssues: this.state.betCurrentIssues,
             Loading: false,
             showCountdown: true,
             showStatusHeigh: false,
+            showResultHeight: false,
             AnimatedNumberProps: {
                 value: 0,
                 duration: 0,
                 delay: 0
-            },
-            showResultHeight: false
+            }
         }, () => {
             dispatch(setAnimationStatus(''));
             dispatch(setTrendIssueCode(this.trendIssueCode));
-            // fixed requestAnimationFrame bug form change page
-            this.countupComRef.setState({
-                animatedValue: 0
-            });
         });
     }
     
@@ -719,13 +694,7 @@ export class bet extends Component {
                     <div className={'status-heigh ' + (!this.state.showStatusHeigh ? 'hide' : '')}>
                         <i className="icon-heigh"></i>
                         <div>
-                            <AnimatedNumber
-                                {...this.state.AnimatedNumberProps}
-                                formatValue={(value) => value.toFixed(2)}
-                                begin={this.countupBeginCheck}
-                                complete={this.countupEnd}
-                                ref={(c) => this.countupComRef = c}
-                            />
+                            <Countup {...this.state.AnimatedNumberProps} complete={this.countupEnd}/>
                         </div>
                     </div>
                     <div className={'betCountdown ' + (!this.state.showCountdown ? 'hide' : '')}>
