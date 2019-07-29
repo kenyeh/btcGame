@@ -4,6 +4,7 @@ import Countup from './Countup'
 import iScroll from 'iscroll/build/iscroll-probe'
 import ReactIScroll from 'react-iscroll'
 import NP from 'number-precision'
+import * as workerTimers from 'worker-timers';
 
 import { setLastNumber, setAnimationStatus, setPlayResult, setTrendIssueCode } from '../../actions';
 import { getLastNumber, submitBet , getBetAward, isDev } from '../../services';
@@ -143,13 +144,13 @@ export class bet extends Component {
 
             if (timer_s === 0) {
                 // end issues
-                clearInterval(this.gameTimer);
+                workerTimers.clearInterval(this.gameTimer);
                 this.startGetLastnumber();
             }
         }
 
         if (this.state.countdownSec > 0) {
-            this.gameTimer = setInterval(countdown, 1000);
+            this.gameTimer = workerTimers.setInterval(countdown, 1000);
         }
     }
 
@@ -279,7 +280,7 @@ export class bet extends Component {
         const { dispatch } = this.props;
         console.log('stop betting');
 
-        message.warning(`第${this.state.issues}期已结束等待火箭升空开，您可进入下期投注`, 5);
+        message.warning(`第${this.state.contdownIssues}期已结束等待火箭升空开，您可进入下期投注`, 5);
         this.setState({
             Loading: true,
             showCountdown: false
